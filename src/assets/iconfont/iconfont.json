@@ -1,0 +1,23 @@
+{
+  "id": "3762095",
+  "name": "FIFA世界杯竞猜",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1212308",
+      "name": "中奖纪录",
+      "font_class": "award",
+      "unicode": "e675",
+      "unicode_decimal": 58997
+    },
+    {
+      "icon_id": "1115042",
+      "name": "记录",
+      "font_class": "record",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    }
+  ]
+}

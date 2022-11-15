@@ -1,0 +1,20 @@
+{
+  "production": {
+    "Project": {
+      "address": "0xA9Ece60c76B31a4ba5A8d39d5D2Aa3d2096be22A"
+    },
+    "Token": {
+      "address": "0x6745d07D24f7566C8c2362002b594636EF2c2Cf2",
+      "decimals": 9
+    }
+  },
+  "development": {
+    "Project": {
+      "address": "0xe537e74ea30faf8936b415c3d71782c6f51496ce"
+    },
+    "Token": {
+      "address": "0x19199c5eac98b4e6b02fa8a76a3118bd7b7f1871",
+      "decimals": 9
+    }
+  }
+}

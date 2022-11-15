@@ -1,0 +1,218 @@
+<template>
+  <div class="end-view">
+    <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="onRefresh">
+      <van-list :offset="40" v-model:loading="listLoading" :finished="finished" @load="onLoad">
+        <div v-for="(item, index) in data" :key="index" class="all-item_wrapper">
+          <div class="item-wrapper_time">
+            <span>{{ new Date(item.startTime).format('yyyy-MM-dd hh:mm:ss') }}</span>
+            <van-icon name="records" @click="goBettingRecord(item)" />
+          </div>
+          <div class="item-wrapper_team">
+            <div>
+              <van-image :src="baseUrl + item.teamAImageUrl" fit="contain" />
+              <span>{{ item.teamAName || 'A队' }}</span>
+            </div>
+            <img src="@img/vs.png" />
+            <div>
+              <van-image :src="baseUrl + item.teamBImageUrl" fit="contain" />
+              <span>{{ item.teamBName || 'B队' }}</span>
+            </div>
+          </div>
+          <div class="item-wrapper_operation">
+            <van-button size="small" type="primary">
+              <template #icon>
+                <img src="@img/cup.png" />
+              </template>
+              {{ ['平局', item.teamAName || 'A队胜', item.teamBName || 'B队胜'][Number(item.result)] }}
+            </van-button>
+            <van-button size="small" type="primary">赔率 1:{{ [item.codds, item.aodds, item.bodds][Number(item.result)] }}</van-button>
+          </div>
+        </div>
+      </van-list>
+    </van-pull-refresh>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { findDistanceEndAll } from '@/server/http/api'
+
+export default {
+  name: 'EndView',
+  computed: {
+    ...mapGetters({
+      baseUrl: 'imageBaseUrl/getUrl'
+    })
+  },
+  data() {
+    return {
+      refreshLoading: false,
+      listLoading: false,
+      finished: false,
+      pageNo: 0,
+      pageSize: 10,
+      data: []
+    }
+  },
+  methods: {
+    onRefresh() {
+      this.pageNo = 1
+      this.findMatch()
+    },
+    onLoad() {
+      this.pageNo += 1
+      this.findMatch()
+    },
+    findMatch() {
+      findDistanceEndAll({
+        pageSize: this.pageSize,
+        pageNo: this.pageNo
+      }).then((res) => {
+        this.data = res
+        this.refreshLoading = false
+        this.listLoading = false
+        if (res.length < this.pageSize) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
+    goBettingRecord(distance) {
+      this.$router.push({
+        name: 'bet',
+        query: {
+          id: distance.gameId.toString(),
+          a: distance.teamAName,
+          b: distance.teamBName,
+          t: distance.startTime
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.end-view {
+  flex: 1;
+  overflow: scroll;
+  .van-list:after {
+    content: '';
+    display: block;
+    height: 50px;
+  }
+  .all-item_wrapper {
+    width: 345px;
+    margin: 15px auto auto;
+    border-radius: 6px;
+    background: linear-gradient(to bottom right, #1678f2, #1678f2);
+    overflow: hidden;
+    > div {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+    .item-wrapper_time {
+      position: relative;
+      justify-content: space-between;
+      padding: 15px;
+      color: #ffffff;
+      .van-icon {
+        font-size: 20px;
+        cursor: pointer;
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 90%;
+        height: 1px;
+        background: #ffffff;
+        transform: scaleY(0.1);
+      }
+    }
+    .item-wrapper_team {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .van-image {
+          width: 60px;
+          min-height: 40px;
+          margin-bottom: 15px;
+        }
+        span {
+          color: #ffffff;
+        }
+      }
+      > img {
+        align-self: center;
+        width: 26px;
+        height: 19px;
+      }
+    }
+    .item-wrapper_operation {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      .van-button {
+        img {
+          width: 22px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .end-view,
+  .keep-px {
+    .van-list:after {
+      height: 50px;
+    }
+    .all-item_wrapper {
+      width: 530px;
+      margin: 24px auto auto;
+      border-radius: 12px;
+      .item-wrapper_time {
+        padding: 23px;
+        .van-icon {
+          font-size: 30px;
+        }
+      }
+      .item-wrapper_team {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        > div {
+          img,
+          .van-image {
+            width: 92px;
+            margin-bottom: 23px;
+          }
+        }
+        > img {
+          width: 40px;
+          height: 30px;
+        }
+      }
+      .item-wrapper_operation {
+        margin-bottom: 30px;
+        .van-button {
+          img {
+            width: 28px;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
