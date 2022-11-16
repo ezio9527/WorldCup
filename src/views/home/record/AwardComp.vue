@@ -11,7 +11,8 @@
       </div>
       <div>
         <span>{{ income }}</span>
-        <van-button size="small" type="primary" icon="share" color="rgb(187, 65, 186)" @click="onSubmit">提取</van-button>
+        <van-button size="small" type="primary" icon="share" color="rgb(187, 65, 186)" @click="onSubmit" v-if="address">提取</van-button>
+        <van-button size="small" type="primary" color="rgb(187, 65, 186)" @click="$router.push({ name: 'wallet' })" v-else>链接钱包</van-button>
       </div>
     </div>
   </div>
@@ -30,6 +31,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      address: 'wallet/getAddress',
       projectContract: 'contract/getProjectContract',
       income: 'contract/getIncome'
     }),

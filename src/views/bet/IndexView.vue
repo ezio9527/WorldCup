@@ -1,7 +1,8 @@
 <template>
   <div class="bet-view">
     <van-nav-bar title="投注记录" left-text="返回" left-arrow @click-left="onClickLeft" />
-    <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="findBetRecord">
+    <van-skeleton title :row="10" :loading="loading" />
+    <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="findBetRecord" v-show="!loading">
       <van-cell size="large" :title="(distance.aTeamName || 'A队') + ' vs ' + (distance.bTeamName || 'B队')" :value="new Date(distance.time).format('yyyy-MM-dd hh:mm:ss')" />
       <van-row class="bet-list_header">
         <van-col span="8">押注</van-col>
@@ -56,6 +57,7 @@ export default {
   },
   data() {
     return {
+      loading: true, // 骨架屏加载
       refreshLoading: false,
       data: {}
     }
@@ -71,6 +73,7 @@ export default {
       }).then((res) => {
         this.data = res
         this.refreshLoading = false
+        this.loading = false
       })
     }
   }

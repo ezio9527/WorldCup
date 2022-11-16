@@ -6,18 +6,25 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "1212308",
-      "name": "中奖纪录",
-      "font_class": "award",
-      "unicode": "e675",
-      "unicode_decimal": 58997
+      "icon_id": "4766965",
+      "name": "link",
+      "font_class": "link",
+      "unicode": "e7e2",
+      "unicode_decimal": 59362
     },
     {
-      "icon_id": "1115042",
-      "name": "记录",
-      "font_class": "record",
-      "unicode": "e61e",
-      "unicode_decimal": 58910
+      "icon_id": "7852111",
+      "name": "wifi",
+      "font_class": "wifi",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "27107530",
+      "name": "link-unlink",
+      "font_class": "unlink",
+      "unicode": "e648",
+      "unicode_decimal": 58952
     }
   ]
 }

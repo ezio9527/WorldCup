@@ -88,7 +88,11 @@ export default {
         pageSize: this.pageSize,
         pageNo: this.pageNo
       }).then((res) => {
-        this.data = Array.from(res).reverse()
+        if (this.pageNo === 1) {
+          this.data = Array.from(res).reverse()
+        } else {
+          this.data = this.data.concat(Array.from(res).reverse() || [])
+        }
         this.refreshLoading = false
         this.listLoading = false
         if (!res || res.length < this.pageSize) {

@@ -1,8 +1,8 @@
 <template>
-  <div class="end-view">
+  <div class="progress-view">
     <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="onRefresh">
       <van-list :offset="40" v-model:loading="listLoading" :finished="finished" @load="onLoad">
-        <div v-for="(item, index) in data" :key="index" class="all-item_wrapper">
+        <div v-for="(item, index) in filterData" :key="index" class="all-item_wrapper">
           <div class="item-wrapper_time">
             <span>{{ new Date(item.startTime).format('yyyy-MM-dd hh:mm:ss') }}</span>
             <van-icon name="records" @click="goBettingRecord(item)" />
@@ -19,31 +19,50 @@
             </div>
           </div>
           <div class="item-wrapper_operation">
-            <van-button size="small" type="primary">
-              <template #icon>
-                <img src="@img/cup.png" />
-              </template>
-              {{ ['平局', item.teamAName || 'A队胜', item.teamBName || 'B队胜'][Number(item.result)] }}
-            </van-button>
-            <van-button size="small" type="primary">赔率 1:{{ [item.codds, item.aodds, item.bodds][Number(item.result)] }}</van-button>
+            <div>
+              <span>1:{{ item.aodds }}</span>
+              <van-button size="small" type="primary" @click="betting()">
+                <template #icon>
+                  <img src="@img/cup.png" />
+                </template>
+                {{ item.teamAName || 'A队' }}胜
+              </van-button>
+            </div>
+            <div>
+              <span>1:{{ item.codds }}</span>
+              <van-button size="small" type="primary" @click="betting()">平局</van-button>
+            </div>
+            <div>
+              <span>1:{{ item.bodds }}</span>
+              <van-button size="small" type="primary" @click="betting()">
+                <template #icon>
+                  <img src="@img/cup.png" />
+                </template>
+                {{ item.teamBName || 'B队' }}胜
+              </van-button>
+            </div>
           </div>
         </div>
       </van-list>
-      <van-empty description="没有更多了" v-show="!refreshLoading && !listLoading && data.length === 0" />
+      <van-empty description="没有更多了" v-show="!refreshLoading && !listLoading && filterData.length === 0" />
     </van-pull-refresh>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { findDistanceEndAll } from '@/server/http/api'
-
+import { findDistanceAll } from '@/server/http/api'
 export default {
-  name: 'EndView',
+  name: 'AllView',
   computed: {
     ...mapGetters({
       baseUrl: 'imageBaseUrl/getUrl'
-    })
+    }),
+    filterData() {
+      return this.data.filter((item) => {
+        return +new Date(item.startTime) - +new Date() < 1800000
+      })
+    }
   },
   data() {
     return {
@@ -56,6 +75,9 @@ export default {
     }
   },
   methods: {
+    betting() {
+      this.$toast('已停止下注')
+    },
     onRefresh() {
       this.pageNo = 1
       this.findMatch()
@@ -65,7 +87,7 @@ export default {
       this.findMatch()
     },
     findMatch() {
-      findDistanceEndAll({
+      findDistanceAll({
         pageSize: this.pageSize,
         pageNo: this.pageNo
       }).then((res) => {
@@ -99,7 +121,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.end-view {
+.progress-view {
   flex: 1;
   overflow: scroll;
   .van-list:after {
@@ -170,9 +192,18 @@ export default {
       display: flex;
       justify-content: space-around;
       margin-bottom: 20px;
-      .van-button {
-        img {
-          width: 22px;
+      > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        span {
+          color: #ffffff;
+          margin-bottom: 10px;
+        }
+        .van-button {
+          img {
+            width: 22px;
+          }
         }
       }
     }
@@ -180,7 +211,7 @@ export default {
 }
 
 @media screen and (min-width: 576px) {
-  .end-view,
+  .progress-view,
   .keep-px {
     .van-list:after {
       height: 50px;
@@ -212,9 +243,14 @@ export default {
       }
       .item-wrapper_operation {
         margin-bottom: 30px;
-        .van-button {
-          img {
-            width: 28px;
+        > div {
+          span {
+            margin-bottom: 15px;
+          }
+          .van-button {
+            img {
+              width: 28px;
+            }
           }
         }
       }

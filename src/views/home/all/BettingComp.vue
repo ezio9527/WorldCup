@@ -12,7 +12,8 @@
     </div>
     <div class="betting-comp_button">
       <van-button color="#67C23A" type="primary" @click="close" size="small">收起</van-button>
-      <van-button color="#F56C6C" type="primary" @click="onSubmit" size="small" :disabled="disabled" v-if="allowance">下注</van-button>
+      <van-button color="#F56C6C" type="primary" @click="$router.push({ name: 'wallet' })" size="small" v-if="!address">链接钱包</van-button>
+      <van-button color="#F56C6C" type="primary" @click="onSubmit" size="small" :disabled="disabled" v-else-if="allowance">下注</van-button>
       <van-button color="#F56C6C" type="primary" @click="approve" size="small" v-else>授权</van-button>
     </div>
     <van-overlay :show="loading">
@@ -53,6 +54,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      address: 'wallet/getAddress',
       balance: 'contract/getTokenBalance',
       projectContract: 'contract/getProjectContract',
       ercContract: 'contract/getErcContract',
@@ -92,6 +94,10 @@ export default {
       this.$emit('update:visible', false)
     },
     onSubmit() {
+      if (+new Date(this.data.startTime) - +new Date() < 1800000) {
+        this.$toast('已停止下注')
+        return
+      }
       this.loading = true
       this.projectContract
         .betting({

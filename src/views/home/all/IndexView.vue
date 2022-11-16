@@ -2,7 +2,7 @@
   <div class="all-view">
     <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="onRefresh">
       <van-list :offset="40" v-model:loading="listLoading" :finished="finished" @load="onLoad">
-        <div v-for="(item, index) in data" :key="index" class="all-item_wrapper">
+        <div v-for="(item, index) in filterData" :key="index" class="all-item_wrapper">
           <div class="item-wrapper_time">
             <span>{{ new Date(item.startTime).format('yyyy-MM-dd hh:mm:ss') }}</span>
             <van-icon name="records" @click="goBettingRecord(item)" />
@@ -44,6 +44,7 @@
           </div>
           <betting-comp v-model:visible="item.visible" :data="item" :win="item.win"></betting-comp>
         </div>
+        <van-empty description="没有更多了" v-show="!refreshLoading && !listLoading && filterData.length === 0" />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -61,7 +62,12 @@ export default {
   computed: {
     ...mapGetters({
       baseUrl: 'imageBaseUrl/getUrl'
-    })
+    }),
+    filterData() {
+      return this.data.filter((item) => {
+        return +new Date(item.startTime) - +new Date() > 1800000
+      })
+    }
   },
   data() {
     return {
@@ -91,7 +97,11 @@ export default {
         pageSize: this.pageSize,
         pageNo: this.pageNo
       }).then((res) => {
-        this.data = res
+        if (this.pageNo === 1) {
+          this.data = res
+        } else {
+          this.data = this.data.concat(res || [])
+        }
         this.refreshLoading = false
         this.listLoading = false
         if (res.length < this.pageSize) {
@@ -168,6 +178,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: flex-end;
         .van-image {
           width: 60px;
           min-height: 40px;

@@ -10,14 +10,14 @@ const router = createRouter({
       component: HomeView,
       children: [
         {
-          path: 'today',
-          name: 'today',
-          component: () => import('@views/home/match/IndexView.vue')
-        },
-        {
           path: 'all',
           name: 'all',
           component: () => import('@views/home/all/IndexView.vue')
+        },
+        {
+          path: 'progress',
+          name: 'progress',
+          component: () => import('@views/home/progress/IndexView.vue')
         },
         {
           path: 'end',
@@ -28,6 +28,11 @@ const router = createRouter({
           path: 'record',
           name: 'record',
           component: () => import('@views/home/record/IndexView.vue')
+        },
+        {
+          path: 'wallet',
+          name: 'wallet',
+          component: () => import('@views/home/wallet/IndexView.vue')
         }
       ]
     },
