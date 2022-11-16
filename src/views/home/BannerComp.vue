@@ -1,16 +1,52 @@
 <template>
-  <div class="home-view_header">
-    <div class="home-header_title">
-      <p>2022卡塔尔世界杯</p>
-      <p>11月20日-12月18日</p>
-    </div>
-    <img class="home-header_cup" src="@img/fifa_world_cup.png" />
-  </div>
+  <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+    <van-swipe-item>
+      <div class="home-view_header" v-if="data.length > 0">
+        <div class="home-header_title">
+          <p>2022卡塔尔世界杯</p>
+          <p>11月20日-12月18日</p>
+        </div>
+        <img class="home-header_cup" src="@img/fifa_world_cup.png" />
+      </div>
+      <div class="home-view_header" v-else>
+        <div class="home-header_title">
+          <p>有奖竞猜</p>
+          <p>1月1日-12月31日</p>
+        </div>
+        <img class="home-header_cup" src="@img/fifa_world_cup.png" />
+      </div>
+    </van-swipe-item>
+  </van-swipe>
 </template>
 
 <script>
+import { findMatchAll } from '@/server/http/api'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'BannerCom'
+  name: 'BannerCom',
+  data() {
+    return {
+      data: []
+    }
+  },
+  computed: {
+    ...mapGetters({
+      baseUrl: 'imageBaseUrl/getUrl'
+    })
+  },
+  created() {
+    this.findMatchAll()
+  },
+  methods: {
+    findMatchAll() {
+      findMatchAll({
+        pageSize: 1000,
+        pageNo: 1
+      }).then((data) => {
+        this.data = data
+      })
+    }
+  }
 }
 </script>
 

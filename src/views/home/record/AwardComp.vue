@@ -11,7 +11,7 @@
       </div>
       <div>
         <span>{{ income }}</span>
-        <van-button size="small" type="primary" icon="share" color="rgb(187, 65, 186)" @click="onSubmit" v-if="address">提取</van-button>
+        <van-button size="small" type="primary" icon="share" color="rgb(187, 65, 186)" @click="onSubmit" v-if="address" :disabled="loading">提取</van-button>
         <van-button size="small" type="primary" color="rgb(187, 65, 186)" @click="$router.push({ name: 'wallet' })" v-else>链接钱包</van-button>
       </div>
     </div>
@@ -26,7 +26,8 @@ export default {
   name: 'AwardComp',
   data: function () {
     return {
-      config
+      config,
+      loading: false
     }
   },
   computed: {
@@ -42,9 +43,32 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.projectContract.pickup().then(() => {
-        console.log('收益提取成功')
-      })
+      this.loading = true
+      this.projectContract
+        .pickup()
+        .then((hash) => {
+          this.projectContract
+            .getTransactionReceipt(hash)
+            .then((result) => {
+              if (result) {
+                this.$dialog.alert({
+                  title: '收益提取成功',
+                  message: '收益已到账!'
+                })
+              } else {
+                this.$dialog.alert({
+                  title: '收益提取失败',
+                  message: '请稍后重试!'
+                })
+              }
+            })
+            .finally(() => {
+              this.loading = false
+            })
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

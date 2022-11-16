@@ -52,7 +52,7 @@ const router = createRouter({
     {
       // 404
       path: '/:pathMatch(.*)*',
-      redirect: '/home/today'
+      redirect: '/home/all'
     }
   ]
 })

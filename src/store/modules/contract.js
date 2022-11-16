@@ -68,8 +68,7 @@ const actions = {
     // 查询中奖收益
     const qryIncome = () => {
       projectContract.findIncome().then((income) => {
-        console.log(income)
-        commit('setIncome', income[0])
+        commit('setIncome', income)
       })
     }
     // 查询授权
