@@ -8,6 +8,15 @@ import { Lazyload } from 'vant'
 import '@/server/http'
 import '@/assets/theme/default/index.less'
 import '@/plugins/Date'
+import * as buffer from 'buffer'
+
+if (typeof window.global === 'undefined') {
+  window.global = window
+}
+
+if (typeof window.Buffer === 'undefined') {
+  window.Buffer = buffer.Buffer
+}
 
 const app = createApp(App)
 

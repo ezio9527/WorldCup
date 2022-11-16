@@ -30,12 +30,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      web3: 'web3/dist/web3.min.js',
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@views': fileURLToPath(new URL('./src/views', import.meta.url)),
       '@img': fileURLToPath(new URL('./src/assets/images', import.meta.url)),
       '@data': fileURLToPath(new URL('./src/assets/data', import.meta.url)),
       '@comp': fileURLToPath(new URL('./src/components', import.meta.url)),
+      process: 'process/browser',
+      web3: 'web3/dist/web3.min.js',
       stream: 'stream-browserify',
       crypto: 'crypto-browserify',
       assert: 'assert'
