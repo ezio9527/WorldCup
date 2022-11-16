@@ -51,6 +51,7 @@ export default {
 
 <style lang="less" scoped>
 .home-view {
+  width: 100%;
   .home-view_wallet {
     display: flex;
     align-items: center;

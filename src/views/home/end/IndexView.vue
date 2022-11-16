@@ -9,12 +9,12 @@
           </div>
           <div class="item-wrapper_team">
             <div>
-              <van-image :src="baseUrl + item.teamAImageUrl" fit="contain" />
+              <van-image :src="baseUrl + item.teamAImageUrl" fit="contain" lazy-load />
               <span>{{ item.teamAName || 'A队' }}</span>
             </div>
             <img src="@img/vs.png" />
             <div>
-              <van-image :src="baseUrl + item.teamBImageUrl" fit="contain" />
+              <van-image :src="baseUrl + item.teamBImageUrl" fit="contain" lazy-load />
               <span>{{ item.teamBName || 'B队' }}</span>
             </div>
           </div>
