@@ -124,4 +124,22 @@ export default {
     transform: scale(0.6);
   }
 }
+
+@media screen and (min-width: 576px) {
+  .list-comp,
+  .keep-px {
+    width: 530px;
+    margin: 24px auto auto;
+    .list-comp_vs {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+    .list-comp_vs.list-comp_tie {
+      font-size: 12px;
+      border-radius: 1000px;
+      padding: 4px;
+      transform: scale(0.6);
+    }
+  }
+}
 </style>

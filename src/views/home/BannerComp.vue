@@ -60,8 +60,6 @@ export default {
 
 <style lang="less" scoped>
 .banner-comp {
-  width: 100%;
-  overflow: hidden;
   .banner-comp_header {
     position: relative;
     height: 90px;

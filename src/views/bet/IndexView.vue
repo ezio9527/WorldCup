@@ -39,7 +39,7 @@
         </van-col>
         <van-col span="8">
           <van-circle :current-rate="teamBPercent" :rate="100" :speed="100" layer-color="#eeeeee" color="#F56C6C">
-            <span>{{ teamAPercent.toFixed(2) }}%</span>
+            <span>{{ teamBPercent.toFixed(2) }}%</span>
             <br />
             <span>{{ data.teamBName }}</span>
           </van-circle>
