@@ -7,10 +7,10 @@
     <div class="record-award_content">
       <div>
         <img src="@img/nuwapay.png" />
-        <span>nuwapay</span>
+        <span>{{ config.contract.Token.symbol }}</span>
       </div>
       <div>
-        <span>2000123</span>
+        <span>{{ income }}</span>
         <van-button size="small" type="primary" icon="share" color="rgb(187, 65, 186)" @click="onSubmit">提取</van-button>
       </div>
     </div>
@@ -19,9 +19,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import config from '@/assets/data/config.js'
 
 export default {
   name: 'AwardComp',
+  data: function () {
+    return {
+      config
+    }
+  },
   computed: {
     ...mapGetters({
       projectContract: 'contract/getProjectContract',

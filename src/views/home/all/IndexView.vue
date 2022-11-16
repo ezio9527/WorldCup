@@ -19,19 +19,28 @@
             </div>
           </div>
           <div class="item-wrapper_operation">
-            <van-button size="small" type="primary" @click="betting(item, 1)">
-              <template #icon>
-                <img src="@img/cup.png" />
-              </template>
-              {{ item.teamAName || 'A队' }}胜
-            </van-button>
-            <van-button size="small" type="primary" @click="betting(item, 0)">平局</van-button>
-            <van-button size="small" type="primary" @click="betting(item, 2)">
-              <template #icon>
-                <img src="@img/cup.png" />
-              </template>
-              {{ item.teamBName || 'B队' }}胜
-            </van-button>
+            <div>
+              <span>1:{{ item.aodds }}</span>
+              <van-button size="small" type="primary" @click="betting(item, 1)">
+                <template #icon>
+                  <img src="@img/cup.png" />
+                </template>
+                {{ item.teamAName || 'A队' }}胜
+              </van-button>
+            </div>
+            <div>
+              <span>1:{{ item.codds }}</span>
+              <van-button size="small" type="primary" @click="betting(item, 0)">平局</van-button>
+            </div>
+            <div>
+              <span>1:{{ item.bodds }}</span>
+              <van-button size="small" type="primary" @click="betting(item, 2)">
+                <template #icon>
+                  <img src="@img/cup.png" />
+                </template>
+                {{ item.teamBName || 'B队' }}胜
+              </van-button>
+            </div>
           </div>
           <betting-comp v-model:visible="item.visible" :data="item" :win="item.win"></betting-comp>
         </div>
@@ -178,9 +187,18 @@ export default {
       display: flex;
       justify-content: space-around;
       margin-bottom: 20px;
-      .van-button {
-        img {
-          width: 22px;
+      > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        span {
+          color: #ffffff;
+          margin-bottom: 10px;
+        }
+        .van-button {
+          img {
+            width: 22px;
+          }
         }
       }
     }
@@ -220,9 +238,14 @@ export default {
       }
       .item-wrapper_operation {
         margin-bottom: 30px;
-        .van-button {
-          img {
-            width: 28px;
+        > div {
+          span {
+            margin-bottom: 15px;
+          }
+          .van-button {
+            img {
+              width: 28px;
+            }
           }
         }
       }

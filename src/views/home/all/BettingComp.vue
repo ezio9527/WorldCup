@@ -3,7 +3,7 @@
     <p class="betting-comp_title">{{ ['平局', data.teamAName + ' 胜', data.teamBName + ' 胜'][win] }}</p>
     <div class="betting-comp_input">
       <van-field v-model="number" type="number" size="mini" label="下注金额" />
-      <van-field v-model="balance" type="number" size="mini" label="nuwapay余额" disabled />
+      <van-field v-model="balance" type="number" size="mini" :label="config.contract.Token.symbol + '余额'" disabled />
       <van-slider v-model="percent" @update:model-value="onChange" max="100" active-color="#e3a715">
         <template #button>
           <div class="betting-input_percent">{{ percent }}%</div>
@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+      config,
       loading: false,
       percent: 0, // 下注金额百分比
       number: 0 // 下注金额

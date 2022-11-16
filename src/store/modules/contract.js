@@ -69,7 +69,7 @@ const actions = {
     const qryIncome = () => {
       projectContract.findIncome().then((income) => {
         console.log(income)
-        commit('setIncome', income)
+        commit('setIncome', income[0])
       })
     }
     // 查询授权

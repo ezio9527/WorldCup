@@ -1,17 +1,27 @@
 <template>
   <div class="bet-view">
     <van-nav-bar title="投注记录" left-text="返回" left-arrow @click-left="onClickLeft" />
-    <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="onRefresh">
+    <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="findBetRecord">
       <van-cell size="large" :title="(distance.aTeamName || 'A队') + ' vs ' + (distance.bTeamName || 'B队')" :value="new Date(distance.time).format('yyyy-MM-dd hh:mm:ss')" />
       <van-row class="bet-list_header">
-        <van-col span="8">时间</van-col>
-        <van-col span="8">下注</van-col>
-        <van-col span="8">金额</van-col>
+        <van-col span="8">押注</van-col>
+        <van-col span="16">金额</van-col>
       </van-row>
-      <van-row v-for="i in 10" :key="i">
-        <van-col span="8">2022-11-11<br />12:11:12</van-col>
-        <van-col span="8">A队</van-col>
-        <van-col span="8">8.1231231</van-col>
+      <van-row>
+        <van-col span="8">{{ data.teamAName }}</van-col>
+        <van-col span="16">{{ data.teamAAmount }}</van-col>
+      </van-row>
+      <van-row>
+        <van-col span="8">{{ data.teamBName }}</van-col>
+        <van-col span="16">{{ data.teamBAmount }}</van-col>
+      </van-row>
+      <van-row>
+        <van-col span="8">平局</van-col>
+        <van-col span="16">{{ data.teamPAmount }}</van-col>
+      </van-row>
+      <van-row>
+        <van-col span="8">总计</van-col>
+        <van-col span="16">{{ data.teamPSum }}</van-col>
       </van-row>
     </van-pull-refresh>
   </div>
@@ -39,7 +49,7 @@ export default {
       immediate: true,
       handler(val) {
         if (val) {
-          this.onRefresh()
+          this.findBetRecord()
         }
       }
     }
@@ -47,32 +57,20 @@ export default {
   data() {
     return {
       refreshLoading: false,
-      data: []
+      data: {}
     }
   },
   methods: {
     onClickLeft() {
       this.$router.back()
     },
-    onRefresh() {
-      this.pageNo = 1
-      this.findBetRecord()
-    },
     findBetRecord() {
       findBetRecordByDistance({
         gameId: this.distance.id,
-        walletAddress: this.address,
-        pageSize: 1000000,
-        pageNo: 1
+        walletAddress: this.address
       }).then((res) => {
         this.data = res
         this.refreshLoading = false
-        this.listLoading = false
-        if (!res || res.length < this.pageSize) {
-          this.finished = true
-        } else {
-          this.finished = false
-        }
       })
     }
   }
@@ -87,7 +85,7 @@ export default {
     background-color: #eeeeee;
   }
   .van-row {
-    padding: 4px 15px;
+    padding: 10px 15px;
     font-size: 12px;
     position: relative;
     &:before {

@@ -1,6 +1,7 @@
 import BaseContract from '@/server/contract/BaseContract'
 import config from '@data/config.js'
 import Web3 from 'web3'
+import BigNumber from 'bignumber.js'
 
 class ProjectContract extends BaseContract {
   /**
@@ -27,7 +28,10 @@ class ProjectContract extends BaseContract {
         .findInfo()
         .call({})
         .then((res) => {
-          resolve(res)
+          let _income = this.fromWei(res[0].toString() + '0000')
+          _income = new BigNumber(_income).toFixed(8, 1)
+          _income = new BigNumber(_income).toString(10)
+          resolve(_income)
         })
         .catch((err) => {
           reject(err)
