@@ -2,10 +2,10 @@
   <div class="home-view">
     <BannerComp></BannerComp>
     <van-tabbar v-model="active" :fixed="false" :route="true">
-      <van-tabbar-item to="/home/all">全部赛程</van-tabbar-item>
-      <van-tabbar-item to="/home/progress">进行中</van-tabbar-item>
+      <van-tabbar-item to="/home/all">未开赛</van-tabbar-item>
+      <van-tabbar-item to="/home/progress">比赛中</van-tabbar-item>
       <van-tabbar-item to="/home/end">已结束</van-tabbar-item>
-      <van-tabbar-item to="/home/record">竞猜记录</van-tabbar-item>
+      <van-tabbar-item to="/home/record">我的竞猜</van-tabbar-item>
       <van-tabbar-item to="/home/wallet">
         <div class="home-view_wallet" :class="{ unlink: !address }">
           <template v-if="address">
