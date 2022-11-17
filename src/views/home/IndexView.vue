@@ -61,4 +61,10 @@ export default {
     }
   }
 }
+@media screen and (min-width: 576px) {
+  .home-view,
+  .keep-px {
+    width: 576px;
+  }
+}
 </style>

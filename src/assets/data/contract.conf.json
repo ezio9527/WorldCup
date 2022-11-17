@@ -1,11 +1,12 @@
 {
   "production": {
     "Project": {
-      "address": "0xA9Ece60c76B31a4ba5A8d39d5D2Aa3d2096be22A"
+      "address": "0x03883a437167713F39742B10E588a651ad815E77"
     },
     "Token": {
-      "address": "0x6745d07D24f7566C8c2362002b594636EF2c2Cf2",
-      "decimals": 9
+      "symbol": "nuwa",
+      "address": "0x7a6e3fd7a155cd923f0c51a1beec2ed61b6e864b",
+      "decimals": 6
     }
   },
   "development": {

@@ -9,11 +9,11 @@
         <van-col span="16">我的金额</van-col>
       </van-row>
       <van-row>
-        <van-col span="8">{{ data.teamAName }}</van-col>
+        <van-col span="8">{{ data.teamAName || 'A队' }}</van-col>
         <van-col span="16">{{ data.teamAAmount }}</van-col>
       </van-row>
       <van-row>
-        <van-col span="8">{{ data.teamBName }}</van-col>
+        <van-col span="8">{{ data.teamBName || 'B队' }}</van-col>
         <van-col span="16">{{ data.teamBAmount }}</van-col>
       </van-row>
       <van-row>
@@ -25,7 +25,7 @@
           <van-circle :current-rate="teamAPercent" :rate="100" :speed="100" layer-color="#eeeeee" color="#1989fa">
             <span>{{ teamAPercent.toFixed(2) }}%</span>
             <br />
-            <span>{{ data.teamAName }}</span>
+            <span>{{ data.teamAName || 'A队' }}</span>
           </van-circle>
           <div>{{ data.teamASum }}</div>
         </van-col>
@@ -41,7 +41,7 @@
           <van-circle :current-rate="teamBPercent" :rate="100" :speed="100" layer-color="#eeeeee" color="#F56C6C">
             <span>{{ teamBPercent.toFixed(2) }}%</span>
             <br />
-            <span>{{ data.teamBName }}</span>
+            <span>{{ data.teamBName || 'B队' }}</span>
           </van-circle>
           <div>{{ data.teamBSum }}</div>
         </van-col>
@@ -116,6 +116,7 @@ export default {
 </script>
 <style lang="less">
 .bet-view {
+  flex: 1;
   .van-circle {
     display: flex;
     flex-direction: column;
@@ -166,6 +167,29 @@ export default {
       justify-content: center;
       > div {
         margin-top: 20px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 450px) {
+  .bet-view,
+  .keep-px {
+    min-width: 450px;
+    max-width: 575px;
+    flex: 1;
+    .bet-list_header {
+      height: 40px;
+      background-color: #ffffff;
+    }
+    .van-row {
+      padding: 10px 15px;
+      font-size: 12px;
+    }
+    .bet-view_percent {
+      .van-col {
+        > div {
+          margin-top: 20px;
+        }
       }
     }
   }

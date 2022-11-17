@@ -6,17 +6,17 @@
         <van-collapse-item :name="index" v-for="(item, index) in data" :key="index">
           <template #title>
             <van-badge color="#F56C6C" :content="Number(item.result) === 1 ? '胜' : ''">
-              <span>{{ item.teamAName }}</span>
+              <span>{{ item.teamAName || 'A队' }}</span>
             </van-badge>
             <span v-if="Number(item.result) === 0" class="list-comp_vs list-comp_tie">平局</span>
             <span class="list-comp_vs" v-else>vs</span>
             <van-badge color="#F56C6C" :content="Number(item.result) === 2 ? '胜' : ''">
-              <span>{{ item.teamBName }}</span>
+              <span>{{ item.teamBName || 'B队' }}</span>
             </van-badge>
           </template>
           <template #value>
             <van-tag color="#F56C6C" v-if="Number(item.betResult) === Number(item.result)">中</van-tag>
-            <span>{{ '下注:' + ['平局', item.teamAName + '胜', item.teamBName + '胜'][Number(item.betResult)] }}</span>
+            <span>{{ '下注:' + ['平局', (item.teamAName || 'A队') + '胜', (item.teamBName || 'B队') + '胜'][Number(item.betResult)] }}</span>
           </template>
           <van-row>
             <van-col span="8">比赛时间</van-col>
@@ -27,12 +27,12 @@
             <van-col span="16">{{ new Date(item.betDate).format('yyyy-MM-dd hh:mm:ss') }}</van-col>
           </van-row>
           <van-row>
-            <van-col span="8">{{ item.teamAName }}胜 1:{{ item.aodds }}</van-col>
+            <van-col span="8">{{ item.teamAName || 'A队' }}胜 1:{{ item.aodds }}</van-col>
             <van-col span="8">平局 1:{{ item.codds }}</van-col>
-            <van-col span="8">{{ item.teamBName }}胜 1:{{ item.bodds }}</van-col>
+            <van-col span="8">{{ item.teamBName || 'B队' }}胜 1:{{ item.bodds }}</van-col>
           </van-row>
           <van-row>
-            <van-col span="12">赛果:{{ ['平局', item.teamAName + '胜', item.teamBName + '胜'][Number(item.result)] }}</van-col>
+            <van-col span="12">赛果:{{ ['平局', (item.teamAName || 'A队') + '胜', (item.teamBName || 'B队') + '胜'][Number(item.result)] }}</van-col>
             <van-col span="12">金额:{{ item.amount }}</van-col>
           </van-row>
         </van-collapse-item>
