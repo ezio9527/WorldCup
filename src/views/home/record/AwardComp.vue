@@ -6,7 +6,7 @@
     </div>
     <div class="record-award_content">
       <div>
-        <img src="@img/nuwapay.png" />
+        <img src="@img/nuwa.png" />
         <span>{{ config.contract.Token.symbol }}</span>
       </div>
       <div>
