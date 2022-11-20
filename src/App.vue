@@ -77,6 +77,7 @@ export default {
 
 <style lang="less">
 #app {
+  overflow: hidden;
   > div {
     display: flex;
     flex-direction: column;

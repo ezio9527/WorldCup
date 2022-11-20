@@ -127,6 +127,7 @@ export default {
 </style>
 <style lang="less" scoped>
 .bet-view {
+  overflow: scroll;
   flex: 1;
   .bet-list_header {
     height: 40px;

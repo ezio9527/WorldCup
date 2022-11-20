@@ -51,6 +51,7 @@ export default {
 
 <style lang="less" scoped>
 .home-view {
+  overflow: hidden;
   width: 100%;
   .home-view_wallet {
     display: flex;
