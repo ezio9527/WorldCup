@@ -1,0 +1,39 @@
+name: Auto Publish Website # 自动部署的名称
+on:
+  push:
+    branches:
+      - master
+    # tags: # 当我们提交代码为tag 是以'v'开头的时候才会触发自动部署到服务端 如 git push tag v0.1.0
+    #   - 'v*'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 运行环境，告诉它运行在什么环境
+    steps: # 步骤
+
+    # 第一步：下载源码（CI/CD拉取代码到自己的本地）
+    - name: Checkout
+      uses: actions/checkout@master
+
+    # 使用 node:16
+    - name: use Node.js 16
+      uses: actions/setup-node@master
+      with:
+        node-version: 14
+
+    # 第二步：打包构建
+    - name: Build
+      uses: actions/setup-node@master
+    - run: npm install # 安装第三方包
+    - run: npm run build # 打包
+
+    # 第三步：部署到服务器
+    - name: Deploy
+      uses: appleboy/scp-action@master
+      with:
+        rm: true #清空target目录
+        host: ${{ secrets.SERVER_HOST }}
+        port: ${{ secrets.SERVER_PORT }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        source: "dist/"
+        target: "/www/server/nginx/html/world_cup/"
