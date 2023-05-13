@@ -3,81 +3,133 @@ import ProjectContract from '@/server/contract/ProjectContract'
 import ERCContract from '@/server/contract/ERCContract'
 import config from '@data/config.js'
 import Web3 from 'web3'
-// import Web3 from 'web3'
 
 const state = () => ({
-  projectContract: null,
-  ercContract: null,
-  balance: 0, // erc代币余额
-  allowance: false, // erc代币授权
-  income: 0 // 中奖收益
+  projectContract: null, // 项目合约对象
+  usdtContract: null, // usdt合约对象
+  tgtContract: null, // tgt合约对象
+  usdt: 0, // usdt余额
+  usdtAllowance: false, // usdt授权
+  tgt: 0, // tgt余额
+  tgtAllowance: false, // tgt授权
+  usdtForBalance: 0, // 余额账户里的usdt
+  usdtForTrusteeship: 0, // 托管账户里的usdt
+  usdtForFreeze: 0 // 托管账户里冻结的usdt
 })
 
 // getters
 const getters = {
-  getIncome(state) {
-    return state.income
-  },
   getProjectContract(state) {
     return state.projectContract
   },
-  getErcContract(state) {
-    return state.ercContract
+  getUsdtContract(state) {
+    return state.usdtContract
   },
-  getTokenBalance(state) {
-    return state.balance
+  getTgtContract(state) {
+    return state.tgtContract
   },
-  getAllowance(state) {
-    return state.allowance
+  getUsdt(state) {
+    return state.usdt
+  },
+  getUsdtAllowance(state) {
+    return state.usdtAllowance
+  },
+  getTgt(state) {
+    return state.tgt
+  },
+  getTgtAllowance(state) {
+    return state.tgtAllowance
+  },
+  getUsdtForBalance(state) {
+    return state.usdtForBalance
+  },
+  getUsdtForTrusteeship(state) {
+    return state.usdtForTrusteeship
+  },
+  getUsdtForFreeze(state) {
+    return state.usdtForFreeze
   }
 }
 
 // mutations
 const mutations = {
-  setIncome(state, income) {
-    state.income = income
-  },
   setProjectContract(state, contract) {
     state.projectContract = contract
   },
-  setErcContract(state, contract) {
-    state.ercContract = contract
+  setUsdtContract(state, usdtContract) {
+    state.usdtContract = usdtContract
   },
-  setTokenBalance(state, balance) {
-    state.balance = balance
+  setTgtContract(state, tgtContract) {
+    state.tgtContract = tgtContract
   },
-  setAllowance(state, allowance) {
-    state.allowance = allowance
+  setUsdt(state, usdt) {
+    state.usdt = usdt
+  },
+  setUsdtAllowance(state, usdtAllowance) {
+    state.usdtAllowance = usdtAllowance
+  },
+  setTgt(state, tgt) {
+    state.tgt = tgt
+  },
+  setTgtAllowance(state, tgtAllowance) {
+    state.tgtAllowance = tgtAllowance
+  },
+  setUsdtForBalance(state, usdtForBalance) {
+    state.usdtForBalance = usdtForBalance
+  },
+  setUsdtForTrusteeship(state, usdtForTrusteeship) {
+    state.usdtForTrusteeship = usdtForTrusteeship
+  },
+  setUsdtForFreeze(state, usdtForFreeze) {
+    state.usdtForFreeze = usdtForFreeze
   }
 }
 
 const actions = {
   initialize({ commit }, account) {
-    // 创建竞猜合约
+    // 创建项目合约
     const projectContract = new ProjectContract(account)
     commit('setProjectContract', projectContract)
-    // 创建代币合约
-    const ercContract = new ERCContract(account, config.contract.Token.address, config.contract.Token.decimals)
-    commit('setErcContract', ercContract)
-    // 查询代币余额
+    // 创建usdt合约
+    const usdtContract = new ERCContract(account, config.contract.USDT.address, config.contract.USDT.decimals)
+    commit('setUsdtContract', usdtContract)
+    // 创建tgt合约
+    const tgtContract = new ERCContract(account, config.contract.Token.address, config.contract.Token.decimals)
+    commit('setTgtContract', tgtContract)
     const qryBalance = () => {
-      ercContract.getBalanceInfo().then((balance) => {
-        commit('setTokenBalance', balance)
+      // 查询钱包里代币余额
+      usdtContract.getBalanceInfo().then((balance) => {
+        commit('setUsdt', balance)
       })
-    }
-    // 查询中奖收益
-    const qryIncome = () => {
-      projectContract.findIncome().then((income) => {
-        commit('setIncome', income)
+      tgtContract.getBalanceInfo().then((balance) => {
+        commit('setTgt', balance)
+      })
+      // 查询余额账户和托管账户里的USDT
+      projectContract.findBalanceByBalance().then((balance) => {
+        commit('setUsdtForBalance', balance)
+      })
+      projectContract.findBalanceByTrusteeship().then(({ balance, freeze }) => {
+        commit('setUsdtForTrusteeship', balance)
+        commit('setUsdtForFreeze', freeze)
       })
     }
     // 查询授权
     const allowance = () => {
-      ercContract
+      usdtContract
         .allowance(config.contract.Project.address)
         .then((num) => {
           num = Web3.utils.toBN(num.toString())
-          commit('setAllowance', num.gt(Web3.utils.toBN(0)))
+          commit('setUsdtAllowance', num.gt(Web3.utils.toBN(0)))
+        })
+        .catch(() => {
+          // 额度查询失败
+          allowance()
+        })
+      tgtContract
+        .allowance(config.contract.Project.address)
+        .then((num) => {
+          num = Web3.utils.toBN(num.toString())
+          commit('setTgtAllowance', num.gt(Web3.utils.toBN(0)))
         })
         .catch(() => {
           // 额度查询失败
@@ -86,10 +138,8 @@ const actions = {
     }
     allowance()
     qryBalance()
-    qryIncome()
     setInterval(() => {
       qryBalance()
-      qryIncome()
     }, 5000)
   }
 }

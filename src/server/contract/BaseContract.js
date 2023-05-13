@@ -268,7 +268,7 @@ class BaseContract {
   }
 
   // 获取精度和处理后的数
-  _getDecimals(number) {
+  _getDecimals(number, decimals = this.decimals) {
     let _decimals = '',
       _number = number
     const decimalsList = {
@@ -279,10 +279,10 @@ class BaseContract {
       15: 'finney',
       18: 'ether'
     }
-    _decimals = decimalsList[this.decimals]
+    _decimals = decimalsList[decimals]
     if (!_decimals) {
       let _d
-      switch (this.decimals) {
+      switch (decimals) {
         case 1:
           _number = _number + '00'
           _d = 3
@@ -339,9 +339,30 @@ class BaseContract {
       _decimals
     }
   }
+
   /**
-   * 根据合约精度转换单位
-   * @param {Number} number 代币
+   * 根据指定合约精度转换单位
+   * @param {Number} number 代币数量
+   * @param {Number} decimals 精度
+   */
+  fromWeiByDecimals(number, decimals) {
+    const result = this._getDecimals(number, decimals)
+    return Web3.utils.fromWei(result._number, result._decimals)
+  }
+
+  /**
+   * 根据指定合约精度转换单位
+   * @param {Number} number 代币数量
+   * @param {Number} decimals 精度
+   */
+  toWeiByDecimals(number, decimals) {
+    const result = this._getDecimals(number, decimals)
+    return Web3.utils.toWei(result._number, result._decimals)
+  }
+
+  /**
+   * 根据当前合约精度转换单位
+   * @param {Number} number 代币数量
    */
   fromWei(number) {
     const result = this._getDecimals(number)
@@ -349,8 +370,8 @@ class BaseContract {
   }
 
   /**
-   * 根据合约精度转换单位
-   * @param {Number} number 代币
+   * 根据当前合约精度转换单位
+   * @param {BN | String} number 代币数量
    */
   toWei(number) {
     const result = this._getDecimals(number)

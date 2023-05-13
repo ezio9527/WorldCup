@@ -7,7 +7,7 @@ const ENV_PRODUCTION = 'production'
 const ENV_DEVELOPMENT = 'development'
 
 // 环境参数
-const env = ENV_PRODUCTION
+const env = ENV_DEVELOPMENT
 
 let config = {
   abi: {

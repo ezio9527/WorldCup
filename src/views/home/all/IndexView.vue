@@ -1,85 +1,205 @@
 <template>
   <div class="all-view">
-    <van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="onRefresh">
-      <van-list :offset="40" v-model:loading="listLoading" :finished="finished" @load="onLoad">
-        <div v-for="(item, index) in filterData" :key="index" class="all-item_wrapper">
-          <div class="item-wrapper_time">
-            <span>{{ new Date(item.startTime).format('yyyy-MM-dd hh:mm:ss') }}</span>
-            <van-icon name="records" @click="goBettingRecord(item)" />
-          </div>
-          <div class="item-wrapper_team">
-            <div>
-              <van-image :src="baseUrl + item.teamAImageUrl" fit="contain" lazy-load />
-              <span>{{ item.teamAName || 'A队' }}</span>
-            </div>
-            <img src="@img/vs.png" />
-            <div>
-              <van-image :src="baseUrl + item.teamBImageUrl" fit="contain" lazy-load />
-              <span>{{ item.teamBName || 'B队' }}</span>
-            </div>
-          </div>
-          <div class="item-wrapper_operation">
-            <div>
-              <span>1:{{ item.aodds }}</span>
-              <van-button size="small" type="primary" @click="betting(item, 1)">
-                <template #icon>
-                  <img src="@img/cup.png" />
-                </template>
-                {{ item.teamAName || 'A队' }}胜
-              </van-button>
-            </div>
-            <div>
-              <span>1:{{ item.codds }}</span>
-              <van-button size="small" type="primary" @click="betting(item, 0)">平局</van-button>
-            </div>
-            <div>
-              <span>1:{{ item.bodds }}</span>
-              <van-button size="small" type="primary" @click="betting(item, 2)">
-                <template #icon>
-                  <img src="@img/cup.png" />
-                </template>
-                {{ item.teamBName || 'B队' }}胜
-              </van-button>
-            </div>
-          </div>
-          <betting-comp v-model:visible="item.visible" :data="item" :win="item.win"></betting-comp>
-        </div>
-        <van-empty description="没有更多了" v-show="!refreshLoading && !listLoading && filterData.length === 0" />
-      </van-list>
-    </van-pull-refresh>
+    <div class="all-view_balance">
+      <van-cell-group inset>
+        <van-cell>
+          <template #title>
+            <span>钱包TGT余额</span>
+          </template>
+          <template #label>
+            <span class="line-word-hidden">{{ tgt }}</span>
+          </template>
+        </van-cell>
+        <van-cell>
+          <template #title>
+            <span>钱包USDT余额</span>
+          </template>
+          <template #label>
+            <span class="line-word-hidden">{{ usdt }}</span>
+          </template>
+        </van-cell>
+        <van-cell>
+          <template #title>
+            <span>余额账户USDT余额</span>
+          </template>
+          <template #label>
+            <span class="line-word-hidden">{{ usdtForBalance }}</span>
+          </template>
+        </van-cell>
+        <van-field v-model="transferVal" placeholder="划转到托管账户">
+          <template #button>
+            <van-button size="small" type="primary" @click="transfer" :disabled="transferDisabled">划转</van-button>
+          </template>
+        </van-field>
+        <van-field v-model="drawVal" placeholder="提币到您的钱包">
+          <template v-if="usdtAllowance && tgtAllowance" #button>
+            <van-button size="small" type="primary" @click="draw" :disabled="drawDisabled">提币</van-button>
+          </template>
+          <template v-else-if="!usdtAllowance" #button>
+            <van-button size="small" type="primary" @click="approveUSDT">授权USDT</van-button>
+          </template>
+          <template v-else-if="!tgtAllowance" #button>
+            <van-button size="small" type="primary" @click="approveTGT">授权TGT</van-button>
+          </template>
+        </van-field>
+      </van-cell-group>
+    </div>
+    <van-overlay :show="loading">
+      <van-loading type="spinner" />
+    </van-overlay>
+    <!--<van-pull-refresh v-model="refreshLoading" :head-height="80" @refresh="onRefresh">-->
+    <!--  <van-list :offset="40" v-model:loading="listLoading" :finished="finished" @load="onLoad">-->
+    <!--    <div v-for="(item, index) in filterData" :key="index" class="all-item_wrapper">-->
+    <!--      <div class="item-wrapper_time">-->
+    <!--        <span>{{ new Date(item.startTime).format('yyyy-MM-dd hh:mm:ss') }}</span>-->
+    <!--        <van-icon name="records" @click="goBettingRecord(item)" />-->
+    <!--      </div>-->
+    <!--      <div class="item-wrapper_team">-->
+    <!--        <div>-->
+    <!--          <van-image :src="baseUrl + item.teamAImageUrl" fit="contain" lazy-load />-->
+    <!--          <span>{{ item.teamAName || 'A队' }}</span>-->
+    <!--        </div>-->
+    <!--        <img src="@img/vs.png" />-->
+    <!--        <div>-->
+    <!--          <van-image :src="baseUrl + item.teamBImageUrl" fit="contain" lazy-load />-->
+    <!--          <span>{{ item.teamBName || 'B队' }}</span>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div class="item-wrapper_operation">-->
+    <!--        <div>-->
+    <!--          <span>1:{{ item.aodds }}</span>-->
+    <!--          <van-button size="small" type="primary" @click="betting(item, 1)">-->
+    <!--            <template #icon>-->
+    <!--              <img src="@img/cup.png" />-->
+    <!--            </template>-->
+    <!--            {{ item.teamAName || 'A队' }}胜-->
+    <!--          </van-button>-->
+    <!--        </div>-->
+    <!--        <div>-->
+    <!--          <span>1:{{ item.codds }}</span>-->
+    <!--          <van-button size="small" type="primary" @click="betting(item, 0)">平局</van-button>-->
+    <!--        </div>-->
+    <!--        <div>-->
+    <!--          <span>1:{{ item.bodds }}</span>-->
+    <!--          <van-button size="small" type="primary" @click="betting(item, 2)">-->
+    <!--            <template #icon>-->
+    <!--              <img src="@img/cup.png" />-->
+    <!--            </template>-->
+    <!--            {{ item.teamBName || 'B队' }}胜-->
+    <!--          </van-button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <betting-comp v-model:visible="item.visible" :data="item" :win="item.win"></betting-comp>-->
+    <!--    </div>-->
+    <!--    <van-empty description="没有更多了" v-show="!refreshLoading && !listLoading && filterData.length === 0" />-->
+    <!--  </van-list>-->
+    <!--</van-pull-refresh>-->
   </div>
 </template>
 
 <script>
-import BettingComp from '@views/home/all/BettingComp.vue'
+// import BettingComp from '@views/home/all/BettingComp.vue'
 import { mapGetters } from 'vuex'
 import { findDistanceAll } from '@/server/http/api'
+import config from '@data/config'
+import ProjectContract from '@/server/contract/ProjectContract'
 export default {
   name: 'AllView',
-  components: {
-    BettingComp
-  },
+  components: {},
   computed: {
     ...mapGetters({
-      baseUrl: 'imageBaseUrl/getUrl'
+      baseUrl: 'imageBaseUrl/getUrl',
+      usdt: 'contract/getUsdt',
+      usdtAllowance: 'contract/getUsdtAllowance',
+      tgt: 'contract/getTgt',
+      tgtAllowance: 'contract/getTgtAllowance',
+      usdtForBalance: 'contract/getUsdtForBalance',
+      projectContract: 'contract/getProjectContract',
+      usdtContract: 'contract/getUsdtContract',
+      tgtContract: 'contract/getTgtContract'
     }),
     filterData() {
       return this.data.filter((item) => {
         return +new Date(item.startTime) - +new Date() > 1800000
       })
+    },
+    transferDisabled() {
+      const _number = Number(this.transferVal)
+      return isNaN(_number) || _number <= 0 || _number > Number(this.usdtForBalance)
+    },
+    drawDisabled() {
+      const _number = Number(this.drawVal)
+      return isNaN(_number) || _number <= 0 || _number > Number(this.usdtForBalance)
     }
   },
   data() {
     return {
+      loading: false,
+      drawVal: '',
+      transferVal: '',
       refreshLoading: false,
       listLoading: false,
-      finished: false,
+      finished: true,
       pageNo: 0,
       pageSize: 10,
       data: []
     }
   },
   methods: {
+    // 授权
+    approveUSDT() {
+      this.loading = true
+      const address = config.contract.Project.address
+      const number = 999999999999999
+      this.usdtContract
+        .approve(address, number)
+        .then(() => {
+          this.$store.commit('contract/setUsdtAllowance', true)
+        })
+        .catch(() => {
+          this.$store.commit('contract/setUsdtAllowance', false)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    approveTGT() {
+      this.loading = true
+      const address = config.contract.Project.address
+      const number = 999999999999999
+      this.tgtContract
+        .approve(address, number)
+        .then(() => {
+          this.$store.commit('contract/setTgtAllowance', true)
+        })
+        .catch(() => {
+          this.$store.commit('contract/setTgtAllowance', false)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    // 提现
+    draw() {
+      this.loading = true
+      this.projectContract.draw(Number(this.drawVal)).finally(() => {
+        this.loading = false
+        this.drawVal = ''
+      })
+    },
+    // 划转
+    transfer() {
+      this.loading = true
+      this.projectContract
+        .transfer({
+          type: ProjectContract.PARAMS_BALANCE_TO_TRUSTEESHIP,
+          number: Number(this.transferVal)
+        })
+        .finally(() => {
+          this.loading = false
+          this.drawVal = ''
+        })
+    },
     betting(distance, win) {
       distance.visible = true
       distance.win = win
@@ -129,7 +249,11 @@ export default {
 <style lang="less" scoped>
 .all-view {
   flex: 1;
+  background-color: #f6f6f6;
   overflow: scroll;
+  .all-view_balance {
+    margin-top: 20px;
+  }
   .van-list:after {
     content: '';
     display: block;
@@ -213,6 +337,11 @@ export default {
         }
       }
     }
+  }
+  .van-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

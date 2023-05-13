@@ -2,14 +2,6 @@
   <div class="wallet-view">
     <div class="wallet-view_connected" v-if="address">
       <van-cell-group inset>
-        <van-cell>
-          <template #title>
-            <span>钱包余额</span>
-          </template>
-          <template #label>
-            <span class="line-word-hidden">{{ balance }}</span>
-          </template>
-        </van-cell>
         <van-cell id="copy-wallet-address">
           <template #title>
             <span>钱包地址(点击复制)</span>
@@ -20,10 +12,18 @@
         </van-cell>
         <van-cell id="copy-project-address">
           <template #title>
-            <span>合约地址(点击复制)</span>
+            <span>云链地址(点击复制)</span>
           </template>
           <template #label>
             <span class="line-word-hidden">{{ config.contract.Project.address }}</span>
+          </template>
+        </van-cell>
+        <van-cell id="copy-tgt-address">
+          <template #title>
+            <span>TGT地址(点击复制)</span>
+          </template>
+          <template #label>
+            <span class="line-word-hidden">{{ config.contract.Token.address }}</span>
           </template>
         </van-cell>
       </van-cell-group>
@@ -53,7 +53,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      balance: 'contract/getTokenBalance',
       address: 'wallet/getAddress',
       wallet: 'wallet/getWallet'
     })
@@ -76,10 +75,21 @@ export default {
       }
     })
     copyProjectAddress.on('success', () => {
-      this.$toast('合约地址复制成功!')
+      this.$toast('云链地址复制成功!')
     })
     copyProjectAddress.on('error', () => {
-      this.$toast('合约地址复制失败!')
+      this.$toast('云链地址复制失败!')
+    })
+    const copyTGTAddress = new ClipboardJS('#copy-tgt-address', {
+      text: () => {
+        return this.config.contract.Project.address
+      }
+    })
+    copyTGTAddress.on('success', () => {
+      this.$toast('TGT地址复制成功!')
+    })
+    copyTGTAddress.on('error', () => {
+      this.$toast('TGT地址复制失败!')
     })
   }
 }

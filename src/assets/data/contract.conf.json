@@ -1,20 +1,30 @@
 {
   "production": {
     "Project": {
-      "address": "0xD74F3A89e1c0ea5F61f6C72212B30629cdea62a7"
+      "address": "0x454d3591e81a643f28ea58455464703483DB10bF"
     },
     "Token": {
-      "symbol": "nuwa",
-      "address": "0x7a6e3fd7a155cd923f0c51a1beec2ed61b6e864b",
-      "decimals": 6
+      "symbol": "TGT",
+      "address": "0x1DfeF301bA80bcc528A11e8f0bF13C4b647dA0dD",
+      "decimals": 8
+    },
+    "USDT": {
+      "symbol": "usdt",
+      "address": "0x19199c5eac98b4e6b02fa8a76a3118bd7b7f1871",
+      "decimals": 9
     }
   },
   "development": {
     "Project": {
-      "address": "0x4d570713723025fa895bf2828f1caa652de18a48"
+      "address": "0x653661C42306d4556984E5Fc3e37D5da9ECea50C"
     },
     "Token": {
-      "symbol": "nuwa",
+      "symbol": "TGT",
+      "address": "0x1DfeF301bA80bcc528A11e8f0bF13C4b647dA0dD",
+      "decimals": 8
+    },
+    "USDT": {
+      "symbol": "USDT",
       "address": "0x19199c5eac98b4e6b02fa8a76a3118bd7b7f1871",
       "decimals": 9
     }

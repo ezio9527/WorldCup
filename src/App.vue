@@ -28,7 +28,7 @@ export default {
     })
     this.$store.commit('wallet/setWallet', this.wallet)
     this.setLanguage()
-    this.$store.dispatch('imageBaseUrl/getBaseUrl')
+    // this.$store.dispatch('imageBaseUrl/getBaseUrl')
   },
   methods: {
     // 授权回调

@@ -16,7 +16,7 @@
       <van-swipe-item>
         <div class="banner-comp_header">
           <div class="banner-header_title">
-            <p>有奖竞猜</p>
+            <p>云链</p>
             <p>1月1日-12月31日</p>
           </div>
           <img class="banner-header_logo" src="@img/match_logo.png" />

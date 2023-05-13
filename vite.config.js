@@ -69,7 +69,7 @@ export default defineConfig({
     }
   },
   build: {
-    chunkSizeWarningLimit: 15000
+    chunkSizeWarningLimit: 25000
     // rollupOptions: {
     //   output: {
     //     // 分包

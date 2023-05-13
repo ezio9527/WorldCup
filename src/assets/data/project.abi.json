@@ -3,12 +3,58 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_lotteryAddress",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "fund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_addr",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_winAddress",
+        "name": "_route",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_usdt",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_work",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_pair",
         "type": "address"
       }
     ],
@@ -19,140 +65,134 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_gameId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_gameResult",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "_owner",
+        "name": "previousOwner",
         "type": "address"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_lotteryId",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
       }
     ],
-    "name": "betEvn",
+    "name": "OwnershipTransferred",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "_owner",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
-    "name": "drawIncomeEvn",
+    "name": "depositEvn",
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "_addGame",
-    "outputs": [
+    "anonymous": false,
+    "inputs": [
       {
+        "indexed": true,
         "internalType": "address",
-        "name": "",
+        "name": "_owner",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "fundEvn",
+    "type": "event"
   },
   {
-    "inputs": [],
-    "name": "_owner",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_erc",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "sendToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "gameId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gameResult",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "oneOdds",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "twoOdds",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "threeOdds",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "endTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "lotteryAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "winAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isUsed",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct lottery.Game",
-        "name": "_game",
-        "type": "tuple"
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_erc",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_val",
+        "type": "uint256"
       }
     ],
-    "name": "addGame",
+    "name": "sendTokenVal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_addr",
+        "type": "address"
+      }
+    ],
+    "name": "setComAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -161,56 +201,95 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
-    "name": "allGame",
+    "name": "withDraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withDrawEvn",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_type",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "workTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_type",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "workTransferEvn",
+    "type": "event"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
+    "inputs": [],
+    "name": "_drawFee",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "gameId",
+        "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "gameResult",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "oneOdds",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "twoOdds",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "threeOdds",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "endTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "lotteryAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "winAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "isUsed",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -219,26 +298,26 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
-    "name": "allLottery",
+    "name": "actionInfo",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "lotteryId",
+        "name": "id",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "gameId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "gameResult",
+        "name": "join_time",
         "type": "uint256"
       },
       {
@@ -248,7 +327,7 @@
       },
       {
         "internalType": "bool",
-        "name": "drawBool",
+        "name": "flag",
         "type": "bool"
       }
     ],
@@ -258,133 +337,68 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_gameId",
-        "type": "uint256"
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "balAccount",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "_gameResult",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "bet",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "companyAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "newAddGame",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "changeAddGame",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_gameId",
-        "type": "uint256"
-      }
-    ],
-    "name": "delGame",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "drawIncome",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "gameId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gameResult",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "oneOdds",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "twoOdds",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "threeOdds",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "endTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "lotteryAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "winAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isUsed",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct lottery.Game",
-        "name": "_game",
-        "type": "tuple"
-      }
-    ],
-    "name": "editGame",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "findInfo",
+    "name": "fundAccount",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "bal",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "freeze",
         "type": "uint256"
       },
+      {
+        "internalType": "uint256",
+        "name": "count",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getWfcUsdtPrice",
+    "outputs": [
       {
         "internalType": "uint256",
         "name": "",
@@ -398,77 +412,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_gameId",
-        "type": "uint256"
-      }
-    ],
-    "name": "findLotteryByUser",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "lotteryId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gameId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gameResult",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "drawBool",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct lottery.Lottery",
         "name": "",
-        "type": "tuple"
+        "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
+    "name": "invite",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "_owner",
+        "name": "",
         "type": "address"
-      }
-    ],
-    "name": "findUserDrawAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -476,10 +429,10 @@
   },
   {
     "inputs": [],
-    "name": "lotteryAddress",
+    "name": "myToken",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }
@@ -501,109 +454,13 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_ercAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "sendToken",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_ercAddress",
-        "type": "address"
-      }
-    ],
-    "name": "sendTokenTwo",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_gameId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_gameResult",
-        "type": "uint256"
-      }
-    ],
-    "name": "setGameResult",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
-    "name": "startId",
+    "name": "uniswapV2Pair",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
+        "internalType": "contract IUniswapV2Pair",
         "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "userLottery",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -611,10 +468,62 @@
   },
   {
     "inputs": [],
-    "name": "winAddress",
+    "name": "uniswapV2Router",
+    "outputs": [
+      {
+        "internalType": "contract IUniswapV2Router02",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "usdt",
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "usdtToken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "work",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "workToken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }

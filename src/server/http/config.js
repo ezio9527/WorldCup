@@ -8,6 +8,10 @@ axios.defaults.transformResponse = (data) => {
   try {
     return JSON_BIG.parse(data)
   } catch (err) {
-    return JSON.parse(data)
+    try {
+      return JSON.parse(data)
+    } catch {
+      return data
+    }
   }
 }
