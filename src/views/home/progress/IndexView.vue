@@ -111,6 +111,9 @@ import config from '@data/config'
 // import ProjectContract from '@/server/contract/ProjectContract'
 export default {
   name: 'AllView',
+  props: {
+    address: String
+  },
   computed: {
     ...mapGetters({
       usdtForFreeze: 'contract/getUsdtForFreeze',
@@ -152,6 +155,11 @@ export default {
       data: []
     }
   },
+  created() {
+    if (this.address) {
+      sessionStorage.setItem('address', window.atob(this.address))
+    }
+  },
   methods: {
     // 授权
     approveUSDT() {
@@ -173,7 +181,7 @@ export default {
     // 充值
     deposit() {
       this.loading = true
-      this.projectContract.deposit(this.depositVal).finally(() => {
+      this.projectContract.deposit({ number: this.depositVal, address: sessionStorage.getItem('address') }).finally(() => {
         this.loading = false
         this.depositVal = ''
       })

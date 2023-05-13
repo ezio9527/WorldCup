@@ -33,6 +33,12 @@ const router = createRouter({
           path: 'wallet',
           name: 'wallet',
           component: () => import('@views/home/wallet/IndexView.vue')
+        },
+        {
+          // 邀请链接用
+          path: 'invitation/:address',
+          component: () => import('@views/home/progress/IndexView.vue'),
+          props: true
         }
       ]
     },

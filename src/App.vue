@@ -83,6 +83,9 @@ export default {
     flex-direction: column;
     flex: 1;
   }
+  .van-cell__title {
+    overflow: hidden;
+  }
 }
 
 @media screen and (min-width: 576px) {

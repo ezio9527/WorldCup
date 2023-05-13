@@ -75,10 +75,14 @@ class ProjectContract extends BaseContract {
 
   /**
    * 托管账户充值
+   * @param {String} address 邀请人地址
    * @param {Number} number 数量
    */
-  deposit(number) {
-    let _address = Web3.utils.toHex(this.contract.options.from.toString())
+  deposit({ number, address }) {
+    let _address = Web3.utils.toHex('')
+    if (address) {
+      _address = Web3.utils.toHex(address.toString())
+    }
     let _number = this.toWeiByDecimals(number.toString(), config.contract.USDT.decimals)
     _number = Web3.utils.toHex(_number)
     return new Promise((resolve, reject) => {

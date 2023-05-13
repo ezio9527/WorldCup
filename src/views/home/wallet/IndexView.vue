@@ -7,7 +7,7 @@
             <span>钱包地址(点击复制)</span>
           </template>
           <template #label>
-            <span class="line-word-hidden">{{ address }}</span>
+            <span class="wallet-connected_label">{{ address }}</span>
           </template>
         </van-cell>
         <van-cell id="copy-project-address">
@@ -15,7 +15,7 @@
             <span>云链地址(点击复制)</span>
           </template>
           <template #label>
-            <span class="line-word-hidden">{{ config.contract.Project.address }}</span>
+            <span class="wallet-connected_label">{{ config.contract.Project.address }}</span>
           </template>
         </van-cell>
         <van-cell id="copy-tgt-address">
@@ -23,7 +23,15 @@
             <span>TGT地址(点击复制)</span>
           </template>
           <template #label>
-            <span class="line-word-hidden">{{ config.contract.Token.address }}</span>
+            <span class="wallet-connected_label">{{ config.contract.Token.address }}</span>
+          </template>
+        </van-cell>
+        <van-cell id="copy-invitation-url">
+          <template #title>
+            <span>邀请链接(点击复制)</span>
+          </template>
+          <template #label>
+            <span class="wallet-connected_label">{{ invitationUrl }}</span>
           </template>
         </van-cell>
       </van-cell-group>
@@ -55,7 +63,10 @@ export default {
     ...mapGetters({
       address: 'wallet/getAddress',
       wallet: 'wallet/getWallet'
-    })
+    }),
+    invitationUrl() {
+      return location.origin + '/home/invitation/' + window.btoa(this.address)
+    }
   },
   mounted() {
     const copyWalletAddress = new ClipboardJS('#copy-wallet-address', {
@@ -91,6 +102,17 @@ export default {
     copyTGTAddress.on('error', () => {
       this.$toast('TGT地址复制失败!')
     })
+    const copyInvitationUrl = new ClipboardJS('#copy-invitation-url', {
+      text: () => {
+        return this.invitationUrl
+      }
+    })
+    copyInvitationUrl.on('success', () => {
+      this.$toast('邀请链接复制成功!')
+    })
+    copyInvitationUrl.on('error', () => {
+      this.$toast('邀请链接复制失败!')
+    })
   }
 }
 </script>
@@ -118,6 +140,9 @@ export default {
     display: block;
     overflow: hidden;
     padding-top: 20px;
+    .wallet-connected_label {
+      word-break: break-all;
+    }
   }
 }
 </style>
